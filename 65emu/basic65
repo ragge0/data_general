@@ -1,0 +1,4 @@
+l o.tap
+dep tto time 1
+att ptr ../../src/mbasic-v2/65emu/mbasicv2.bin
+g
