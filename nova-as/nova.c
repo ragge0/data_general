@@ -242,6 +242,19 @@ md_reloc(struct direc *d, struct eval *ev)
 }
 
 /*
+ * result of an expression is usually unsigned, so we may have to convert it 
+ * to signed.
+ */
+static int
+valsign(int val)
+{
+	if (sizeof(int) == 2)
+		return val; /* nothing to do */
+	val = (signed short)val;
+	return val;
+}
+
+/*
  * Write out an instruction to destination file.
  * The instructions should not have any unresolved symbols here.
  */
@@ -259,7 +272,7 @@ p2_instr(struct insn *in)
 		type = expres(ev, p2_rdexpr());
 		if ((instr & 01400) != 0) {
 			/* relative AC2 or AC3 (or PC) */
-			val = ev->val;
+			val = valsign(ev->val);
 			if (type != EVT_ABS)
 				error("expression not absolute");
 			if (val < -128 || val > 127)
