@@ -73,7 +73,7 @@ MYID			"."?{L}({L}|{D})*
 0[bB]{B}+		{ cvtdig(2); return(NUMBER); }
 {D}+			{ cvtdig(DEFAULT_RADIX); return(NUMBER); }
 
-'(\\.|[^\\'])		{	char *c = &yytext[1];
+'(\\.|[^\\'])'?		{	char *c = &yytext[1];
 				yylval.val = esccon(&c);
 				return(NUMBER);
 			}
@@ -83,6 +83,7 @@ MYID			"."?{L}({L}|{D})*
 "<<"|">>"		{ return(yytext[0]); }
 
 #.*$			{ ; }
+\/\/.*$			{ ; }
 
 .			{ return yytext[0]; }
 
