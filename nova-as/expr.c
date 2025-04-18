@@ -262,8 +262,10 @@ evtree(struct expr *e, struct eval *ev)
 			if (e->e_sym->sub) {
 				ev->type = EVT_SEG;
 				ev->segn = e->e_sym->sub->segnum;
-			} else
+			} else {
+				ev->sp = 0;
 				ev->type = EVT_ABS;
+			}
 			ev->val = e->e_sym->val;
 		}
 		break;

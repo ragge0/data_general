@@ -65,7 +65,7 @@ parse(void)
 			error("unexpected command '%s'", symname(t));
 		}
 		if ((t = tok_get()) != DELIM)
-			error("junk '%d' after statement", t);
+			error("junk '%s' after statement", symname(t));
 		lninc(yylval.val);
 	}
 }

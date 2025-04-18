@@ -89,25 +89,35 @@ symget(int v)
 	return &symary[v/SYMCHSZ][v%SYMCHSZ].hhdr;
 }
 
+static char *nmapper[] = {
+	"LABEL", "IDENT", "NUMBER", "DELIM", "STRING", "INSTR", "DIREC",
+	    "LINENO", "DOTSEGMENT", "FILENM", "DOTSYNC"
+};
+
 /*
  * Return a symbol name based on its internal number.
  */
 char *
 symname(int n)
 {
-	static char ss[2];
+	static char ss[15];
 	struct hshhdr *h;
 	char *c;
 
+	c = NULL;
 	if (n < 256) {
 		ss[0] = n;
 		c = ss;
+	} else if (n < DIRBASE) {
+		if (n > LABEL &&
+		    n < LABEL + sizeof(nmapper)/sizeof(nmapper[0]))
+			c = nmapper[n - LABEL];
 	} else {
-		if ((h = symget(n)) == NULL)
-			c = "ERROR";
-		else
+		if ((h = symget(n)) != NULL)
 			c = h->name;
 	}
+	if (c == NULL)
+		sprintf(ss, "%d", n);
 	return c;
 }
 
